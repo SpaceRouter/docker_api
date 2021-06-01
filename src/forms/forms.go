@@ -1,6 +1,9 @@
 package forms
 
-import "github.com/spacerouter/docker_api/models"
+import (
+	"github.com/docker/docker/api/types"
+	"github.com/spacerouter/docker_api/models"
+)
 
 type StackResponse struct {
 	Message   string
@@ -9,10 +12,10 @@ type StackResponse struct {
 	Developer *models.Developer
 }
 
-type StackSearchResponse struct {
-	Message string
-	Ok      bool
-	Stacks  []StackInfo
+type ContainersResponse struct {
+	Message    string
+	Ok         bool
+	Containers []types.Container
 }
 
 type StackInfo struct {

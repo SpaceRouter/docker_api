@@ -3,13 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/docker/docker/client"
 	"github.com/spacerouter/docker_api/config"
 	"github.com/spacerouter/docker_api/server"
 	"log"
 	"os"
 )
 
-// @title SpaceRouter Marketplace
+// @title SpaceRouter docker_api
 // @version 0.1
 // @description
 
@@ -38,7 +39,16 @@ func main() {
 	flag.Parse()
 	config.Init(*environment)
 
-	err := server.Init()
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		panic(err)
+	}
+
+	defer func(cli *client.Client) {
+		_ = cli.Close()
+	}(cli)
+
+	err = server.Init(cli)
 	if err != nil {
 		log.Fatal(err)
 	}
