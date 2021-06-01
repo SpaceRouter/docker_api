@@ -1,0 +1,13 @@
+server:
+  host: 0.0.0.0
+  port: 8081
+security:
+  secret_key: JESUISHYPERFANDESEXE
+
+db:
+  type: "sqlite"
+  database: "gorm.db"
+  user: ""
+  password: ""
+  host: ""
+  port: "80"

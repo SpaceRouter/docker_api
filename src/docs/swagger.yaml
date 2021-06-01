@@ -1,0 +1,254 @@
+basePath: /
+definitions:
+  forms.StackInfo:
+    properties:
+      description:
+        type: string
+      developer:
+        $ref: '#/definitions/models.Developer'
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  forms.StackResponse:
+    properties:
+      developer:
+        $ref: '#/definitions/models.Developer'
+      message:
+        type: string
+      ok:
+        type: boolean
+      stack:
+        $ref: '#/definitions/models.Stack'
+    type: object
+  forms.StackSearchResponse:
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+      stacks:
+        items:
+          $ref: '#/definitions/forms.StackInfo'
+        type: array
+    type: object
+  models.Developer:
+    properties:
+      name:
+        type: string
+      website:
+        type: string
+    type: object
+  models.EnvVar:
+    properties:
+      defaultValue:
+        type: string
+      name:
+        type: string
+      serviceID:
+        type: integer
+    type: object
+  models.Network:
+    properties:
+      name:
+        type: string
+      serviceID:
+        type: integer
+    type: object
+  models.NetworkDeclaration:
+    properties:
+      name:
+        type: string
+      stackID:
+        type: integer
+    type: object
+  models.Port:
+    properties:
+      port:
+        type: integer
+      serviceID:
+        type: integer
+    type: object
+  models.Service:
+    properties:
+      envs:
+        items:
+          $ref: '#/definitions/models.EnvVar'
+        type: array
+      image:
+        type: string
+      imageVersion:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/models.Network'
+        type: array
+      ports:
+        items:
+          $ref: '#/definitions/models.Port'
+        type: array
+      stackID:
+        type: integer
+      volumes:
+        items:
+          $ref: '#/definitions/models.Volume'
+        type: array
+    type: object
+  models.Stack:
+    properties:
+      description:
+        type: string
+      developerID:
+        type: integer
+      icon:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/models.NetworkDeclaration'
+        type: array
+      services:
+        items:
+          $ref: '#/definitions/models.Service'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/models.VolumeDeclaration'
+        type: array
+    type: object
+  models.Volume:
+    properties:
+      mountPoint:
+        type: string
+      name:
+        type: string
+      serviceID:
+        type: integer
+    type: object
+  models.VolumeDeclaration:
+    properties:
+      name:
+        type: string
+      stackID:
+        type: integer
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: contact@esieespace.fr
+    name: ESIEESPACE Network
+    url: http://esieespace.fr
+  license:
+    name: GPL-3.0
+    url: https://github.com/SpaceRouter/authentication_server/blob/louis/LICENSE
+  title: SpaceRouter Marketplace
+  version: "0.1"
+paths:
+  /v1/developer/{search}:
+    get:
+      description: Get all stacks information uploaded by a user
+      operationId: get_stack_by_user_ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+      summary: Get stack by user ID
+  /v1/search/stack/{search}:
+    get:
+      description: Search for stacks reduced information by name
+      operationId: get_stack_search
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+      summary: Search for stacks by name
+  /v1/stack/{id}:
+    get:
+      description: Get all stack information from stack ID
+      operationId: get_stack_by_id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+      summary: Get stack by ID
+  /v1/stacks:
+    get:
+      description: Get all stacks
+      operationId: get_all_stacks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackSearchResponse'
+      summary: Get all stacks
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
