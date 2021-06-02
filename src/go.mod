@@ -12,7 +12,6 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
-	github.com/spacerouter/sr_auth v0.0.8 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.3.0
@@ -20,5 +19,5 @@ require (
 	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
 	golang.org/x/sys v0.0.0-20210601080250-7ecdf8ef093b // indirect
 	golang.org/x/tools v0.1.2 // indirect
-	gorm.io/gorm v1.21.10
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )

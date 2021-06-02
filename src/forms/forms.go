@@ -12,6 +12,17 @@ type StackResponse struct {
 	Developer *models.Developer
 }
 
+type BasicResponse struct {
+	Message string
+	Ok      bool
+}
+
+type StackListResponse struct {
+	Message string
+	Ok      bool
+	Stacks  []string
+}
+
 type ContainersResponse struct {
 	Message    string
 	Ok         bool
