@@ -1,4 +1,4 @@
-FROM goland
+FROM golang
 
 COPY src /source
 WORKDIR /source
