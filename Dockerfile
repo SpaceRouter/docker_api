@@ -1,4 +1,4 @@
-FROM golan
+FROM goland
 
 COPY src /source
 WORKDIR /source
