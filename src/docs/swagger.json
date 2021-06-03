@@ -15,7 +15,411 @@
     },
     "host": "localhost:8081",
     "basePath": "/",
-    "paths": {},
+    "paths": {
+        "/v1/containers": {
+            "get": {
+                "description": "Get all containers",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all containers",
+                "operationId": "GetContainers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.ContainersResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.ContainersResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stack/{name}": {
+            "get": {
+                "description": "Get stack info",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get stack info",
+                "operationId": "GetStack",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create or modify stack",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create or modify stack",
+                "operationId": "CreateStack",
+                "parameters": [
+                    {
+                        "description": "Stack",
+                        "name": "Stack",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/models.Stack"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove stack",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Remove stack",
+                "operationId": "RemoveStack",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stack/{name}/start": {
+            "get": {
+                "description": "Start stack",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Start stack",
+                "operationId": "StartStack",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stack/{name}/stop": {
+            "get": {
+                "description": "Stop stack",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Stop stack",
+                "operationId": "StopStack",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stacks": {
+            "get": {
+                "description": "Get stack list",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get stack list",
+                "operationId": "GetStackList",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackListResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackListResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "forms.BasicResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "forms.ContainersResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "forms.StackListResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "stacks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "forms.StackResponse": {
+            "type": "object",
+            "properties": {
+                "developer": {
+                    "$ref": "#/definitions/models.Developer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "stack": {
+                    "$ref": "#/definitions/models.Stack"
+                }
+            }
+        },
+        "models.Developer": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EnvVar": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Network": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NetworkDeclaration": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Port": {
+            "type": "object",
+            "properties": {
+                "inputPort": {
+                    "type": "integer"
+                },
+                "outputPort": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Service": {
+            "type": "object",
+            "properties": {
+                "envs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.EnvVar"
+                    }
+                },
+                "image": {
+                    "type": "string"
+                },
+                "imageVersion": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Network"
+                    }
+                },
+                "ports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Port"
+                    }
+                },
+                "volumes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Volume"
+                    }
+                }
+            }
+        },
+        "models.Stack": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.NetworkDeclaration"
+                    }
+                },
+                "services": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Service"
+                    }
+                },
+                "volumes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.VolumeDeclaration"
+                    }
+                }
+            }
+        },
+        "models.Volume": {
+            "type": "object",
+            "properties": {
+                "mountPoint": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VolumeDeclaration": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "ApiKeyAuth": {
             "type": "apiKey",

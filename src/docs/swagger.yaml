@@ -1,4 +1,130 @@
 basePath: /
+definitions:
+  forms.BasicResponse:
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+    type: object
+  forms.ContainersResponse:
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+    type: object
+  forms.StackListResponse:
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+      stacks:
+        items:
+          type: string
+        type: array
+    type: object
+  forms.StackResponse:
+    properties:
+      developer:
+        $ref: '#/definitions/models.Developer'
+      message:
+        type: string
+      ok:
+        type: boolean
+      stack:
+        $ref: '#/definitions/models.Stack'
+    type: object
+  models.Developer:
+    properties:
+      name:
+        type: string
+      website:
+        type: string
+    type: object
+  models.EnvVar:
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+    type: object
+  models.Network:
+    properties:
+      name:
+        type: string
+    type: object
+  models.NetworkDeclaration:
+    properties:
+      name:
+        type: string
+    type: object
+  models.Port:
+    properties:
+      inputPort:
+        type: integer
+      outputPort:
+        type: integer
+    type: object
+  models.Service:
+    properties:
+      envs:
+        items:
+          $ref: '#/definitions/models.EnvVar'
+        type: array
+      image:
+        type: string
+      imageVersion:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/models.Network'
+        type: array
+      ports:
+        items:
+          $ref: '#/definitions/models.Port'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/models.Volume'
+        type: array
+    type: object
+  models.Stack:
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/models.NetworkDeclaration'
+        type: array
+      services:
+        items:
+          $ref: '#/definitions/models.Service'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/models.VolumeDeclaration'
+        type: array
+    type: object
+  models.Volume:
+    properties:
+      mountPoint:
+        type: string
+      name:
+        type: string
+    type: object
+  models.VolumeDeclaration:
+    properties:
+      name:
+        type: string
+    type: object
 host: localhost:8081
 info:
   contact:
@@ -10,7 +136,145 @@ info:
     url: https://github.com/SpaceRouter/authentication_server/blob/louis/LICENSE
   title: SpaceRouter docker_api
   version: "0.1"
-paths: {}
+paths:
+  /v1/containers:
+    get:
+      description: Get all containers
+      operationId: GetContainers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.ContainersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.ContainersResponse'
+      summary: Get all containers
+  /v1/stack/{name}:
+    delete:
+      description: Remove stack
+      operationId: RemoveStack
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "404":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+      summary: Remove stack
+    get:
+      description: Get stack info
+      operationId: GetStack
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackResponse'
+      summary: Get stack info
+    post:
+      consumes:
+      - application/json
+      description: Create or modify stack
+      operationId: CreateStack
+      parameters:
+      - description: Stack
+        in: body
+        name: Stack
+        schema:
+          $ref: '#/definitions/models.Stack'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "400":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "401":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+      summary: Create or modify stack
+  /v1/stack/{name}/start:
+    get:
+      description: Start stack
+      operationId: StartStack
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "404":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+      summary: Start stack
+  /v1/stack/{name}/stop:
+    get:
+      description: Stop stack
+      operationId: StopStack
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "404":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+      summary: Stop stack
+  /v1/stacks:
+    get:
+      description: Get stack list
+      operationId: GetStackList
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.StackListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.StackListResponse'
+      summary: Get stack list
 securityDefinitions:
   ApiKeyAuth:
     in: header

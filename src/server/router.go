@@ -37,6 +37,7 @@ func NewRouter(cli *client.Client) *gin.Engine {
 		{
 			stack.GET(":name", dockerCtrl.GetStack)
 			stack.POST(":name", dockerCtrl.CreateStack)
+			stack.DELETE(":name", dockerCtrl.RemoveStack)
 			stack.GET(":name/start", dockerCtrl.StartStack)
 			stack.GET(":name/stop", dockerCtrl.StopStack)
 		}

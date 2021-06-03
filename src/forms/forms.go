@@ -26,7 +26,7 @@ type StackListResponse struct {
 type ContainersResponse struct {
 	Message    string
 	Ok         bool
-	Containers []types.Container
+	Containers []types.Container `swaggerignore:"true"`
 }
 
 type StackInfo struct {

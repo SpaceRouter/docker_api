@@ -37,6 +37,14 @@ func IsComposeExist(name string) bool {
 	return true
 }
 
+func RemoveCompose(name string) error {
+	err := os.Remove(GetComposePath(name))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func WriteCompose(name string, compose models.Compose) error {
 	open, err := os.Open(GetComposePath(name))
 	if err != nil {

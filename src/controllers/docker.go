@@ -14,6 +14,14 @@ type DockerController struct {
 	Client *client.Client
 }
 
+// GetContainers godoc
+// @Summary Get all containers
+// @Description Get all containers
+// @ID GetContainers
+// @Produce  json
+// @Success 200 {object} forms.ContainersResponse
+// @Failure 500 {object} forms.ContainersResponse
+// @Router /v1/containers [get]
 func (dc *DockerController) GetContainers(c *gin.Context) {
 	list, err := dc.Client.ContainerList(c, types.ContainerListOptions{})
 	if err != nil {
@@ -32,6 +40,16 @@ func (dc *DockerController) GetContainers(c *gin.Context) {
 	})
 }
 
+// CreateStack godoc
+// @Summary Create or modify stack
+// @Description Create or modify stack
+// @ID CreateStack
+// @Produce  json
+// @Accept  json
+// @Param Stack body models.Stack false "Stack"
+// @Success 200 {object} forms.BasicResponse
+// @Failure 500,400,401 {object} forms.BasicResponse
+// @Router /v1/stack/{name} [post]
 func (dc *DockerController) CreateStack(c *gin.Context) {
 	var stack models.Stack
 
@@ -54,6 +72,14 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 	}
 }
 
+// GetStack godoc
+// @Summary Get stack info
+// @Description Get stack info
+// @ID GetStack
+// @Produce  json
+// @Success 200 {object} forms.StackResponse
+// @Failure 500 {object} forms.StackResponse
+// @Router /v1/stack/{name} [get]
 func (dc *DockerController) GetStack(c *gin.Context) {
 	stack, err := utils.ImportCompose(c.Param("name"))
 	if err != nil {
@@ -72,6 +98,14 @@ func (dc *DockerController) GetStack(c *gin.Context) {
 	})
 }
 
+// GetStackList godoc
+// @Summary Get stack list
+// @Description Get stack list
+// @ID GetStackList
+// @Produce  json
+// @Success 200 {object} forms.StackListResponse
+// @Failure 500 {object} forms.StackListResponse
+// @Router /v1/stacks [get]
 func (dc *DockerController) GetStackList(c *gin.Context) {
 	stacks, err := utils.ListComposes()
 	if err != nil {
@@ -90,6 +124,14 @@ func (dc *DockerController) GetStackList(c *gin.Context) {
 	})
 }
 
+// StartStack godoc
+// @Summary Start stack
+// @Description Start stack
+// @ID StartStack
+// @Produce  json
+// @Success 200 {object} forms.BasicResponse
+// @Failure 500,404 {object} forms.BasicResponse
+// @Router /v1/stack/{name}/start [get]
 func (dc *DockerController) StartStack(c *gin.Context) {
 	name := c.Param("name")
 	exist := utils.IsComposeExist(name)
@@ -103,9 +145,9 @@ func (dc *DockerController) StartStack(c *gin.Context) {
 
 	err := utils.StartStack(name)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.BasicResponse{
 			Ok:      false,
-			Message: "Stack not found",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -116,7 +158,49 @@ func (dc *DockerController) StartStack(c *gin.Context) {
 	})
 }
 
+// StopStack godoc
+// @Summary Stop stack
+// @Description Stop stack
+// @ID StopStack
+// @Produce  json
+// @Success 200 {object} forms.BasicResponse
+// @Failure 500,404 {object} forms.BasicResponse
+// @Router /v1/stack/{name}/stop [get]
 func (dc *DockerController) StopStack(c *gin.Context) {
+	name := c.Param("name")
+	exist := utils.IsComposeExist(name)
+	if !exist {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: "Stack not found",
+		})
+		return
+	}
+
+	err := utils.StopStack(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.BasicResponse{
+			Ok:      false,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, forms.BasicResponse{
+		Ok:      true,
+		Message: "",
+	})
+}
+
+// RemoveStack godoc
+// @Summary Remove stack
+// @Description Remove stack
+// @ID RemoveStack
+// @Produce  json
+// @Success 200 {object} forms.BasicResponse
+// @Failure 500,404 {object} forms.BasicResponse
+// @Router /v1/stack/{name} [delete]
+func (dc *DockerController) RemoveStack(c *gin.Context) {
 	name := c.Param("name")
 	exist := utils.IsComposeExist(name)
 	if !exist {
@@ -132,6 +216,15 @@ func (dc *DockerController) StopStack(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
 			Ok:      false,
 			Message: "Stack not found",
+		})
+		return
+	}
+
+	err = utils.RemoveCompose(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: err.Error(),
 		})
 		return
 	}
