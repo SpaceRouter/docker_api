@@ -89,3 +89,55 @@ func (dc *DockerController) GetStackList(c *gin.Context) {
 		Stacks:  stacks,
 	})
 }
+
+func (dc *DockerController) StartStack(c *gin.Context) {
+	name := c.Param("name")
+	exist := utils.IsComposeExist(name)
+	if !exist {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: "Stack not found",
+		})
+		return
+	}
+
+	err := utils.StartStack(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: "Stack not found",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, forms.BasicResponse{
+		Ok:      true,
+		Message: "",
+	})
+}
+
+func (dc *DockerController) StopStack(c *gin.Context) {
+	name := c.Param("name")
+	exist := utils.IsComposeExist(name)
+	if !exist {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: "Stack not found",
+		})
+		return
+	}
+
+	err := utils.StopStack(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+			Ok:      false,
+			Message: "Stack not found",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, forms.BasicResponse{
+		Ok:      true,
+		Message: "",
+	})
+}

@@ -32,8 +32,14 @@ func NewRouter(cli *client.Client) *gin.Engine {
 		//v1.Use(auth.SrAuthMiddlewareGin())
 		v1.GET("containers", dockerCtrl.GetContainers)
 		v1.GET("stacks", dockerCtrl.GetStackList)
-		v1.GET("stack/:name", dockerCtrl.GetStack)
 
+		stack := v1.Group("stack")
+		{
+			stack.GET(":name", dockerCtrl.GetStack)
+			stack.POST(":name", dockerCtrl.CreateStack)
+			stack.GET(":name/start", dockerCtrl.StartStack)
+			stack.GET(":name/stop", dockerCtrl.StopStack)
+		}
 	}
 
 	return router
