@@ -56,29 +56,7 @@ var doc = `{
                 }
             }
         },
-        "/v1/stack/{name}": {
-            "get": {
-                "description": "Get stack info",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get stack info",
-                "operationId": "GetStack",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/forms.StackResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/forms.StackResponse"
-                        }
-                    }
-                }
-            },
+        "/v1/stack/": {
             "post": {
                 "description": "Create or modify stack",
                 "consumes": [
@@ -122,6 +100,30 @@ var doc = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/forms.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stack/{name}": {
+            "get": {
+                "description": "Get stack info",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get stack info",
+                "operationId": "GetStack",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.StackResponse"
                         }
                     }
                 }

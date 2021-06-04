@@ -153,6 +153,38 @@ paths:
           schema:
             $ref: '#/definitions/forms.ContainersResponse'
       summary: Get all containers
+  /v1/stack/:
+    post:
+      consumes:
+      - application/json
+      description: Create or modify stack
+      operationId: CreateStack
+      parameters:
+      - description: Stack
+        in: body
+        name: Stack
+        schema:
+          $ref: '#/definitions/models.Stack'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "400":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "401":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.BasicResponse'
+      summary: Create or modify stack
   /v1/stack/{name}:
     delete:
       description: Remove stack
@@ -188,37 +220,6 @@ paths:
           schema:
             $ref: '#/definitions/forms.StackResponse'
       summary: Get stack info
-    post:
-      consumes:
-      - application/json
-      description: Create or modify stack
-      operationId: CreateStack
-      parameters:
-      - description: Stack
-        in: body
-        name: Stack
-        schema:
-          $ref: '#/definitions/models.Stack'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/forms.BasicResponse'
-        "400":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/forms.BasicResponse'
-        "401":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/forms.BasicResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/forms.BasicResponse'
-      summary: Create or modify stack
   /v1/stack/{name}/start:
     get:
       description: Start stack
