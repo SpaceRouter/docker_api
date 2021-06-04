@@ -4,6 +4,7 @@ import (
 	"github.com/spacerouter/docker_api/models"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -46,21 +47,27 @@ func RemoveCompose(name string) error {
 }
 
 func WriteCompose(name string, compose models.Compose) error {
-	open, err := os.Open(GetComposePath(name))
+	file, err := os.OpenFile(GetComposePath(name), os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
 
 	defer func(open *os.File) {
 		_ = open.Close()
-	}(open)
+	}(file)
+
+	err = file.Truncate(0)
+	if err != nil {
+		return err
+	}
 
 	marshal, err := yaml.Marshal(&compose)
 	if err != nil {
 		return err
 	}
 
-	_, err = open.WriteString(string(marshal))
+	log.Println(string(marshal))
+	_, err = file.WriteString(string(marshal))
 	if err != nil {
 		return err
 	}

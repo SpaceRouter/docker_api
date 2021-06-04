@@ -7,6 +7,7 @@ import (
 	"github.com/spacerouter/docker_api/forms"
 	"github.com/spacerouter/docker_api/models"
 	"github.com/spacerouter/docker_api/utils"
+	"log"
 	"net/http"
 )
 
@@ -63,6 +64,7 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 	}
 
 	compose := utils.StackToCompose(stack)
+	log.Println()
 	err = utils.WriteCompose(stack.Name, compose)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, forms.BasicResponse{
@@ -70,6 +72,11 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 			Message: err.Error(),
 		})
 	}
+
+	c.JSON(http.StatusInternalServerError, forms.BasicResponse{
+		Ok:      true,
+		Message: "",
+	})
 }
 
 // GetStack godoc

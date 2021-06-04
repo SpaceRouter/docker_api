@@ -8,7 +8,7 @@ import (
 
 func StartStack(stackName string) error {
 
-	cmd := exec.Command("docker-compose", "up", "-f", GetComposePath(stackName), "-d")
+	cmd := exec.Command("docker-compose", "-f", GetComposePath(stackName), "-p", stackName, "up", "-d")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -28,7 +28,7 @@ func StartStack(stackName string) error {
 
 func StopStack(stackName string) error {
 
-	cmd := exec.Command("docker-compose", "down", "-f", GetComposePath(stackName))
+	cmd := exec.Command("docker-compose", "-f", GetComposePath(stackName), "down")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
