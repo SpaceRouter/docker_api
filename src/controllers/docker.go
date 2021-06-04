@@ -50,7 +50,7 @@ func (dc *DockerController) GetContainers(c *gin.Context) {
 // @Param Stack body models.Stack false "Stack"
 // @Success 200 {object} forms.BasicResponse
 // @Failure 500,400,401 {object} forms.BasicResponse
-// @Router /v1/stack/{name} [post]
+// @Router /v1/stack/ [post]
 func (dc *DockerController) CreateStack(c *gin.Context) {
 	var stack models.Stack
 
