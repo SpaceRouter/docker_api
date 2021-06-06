@@ -10,10 +10,10 @@ import (
 	"strings"
 )
 
-const ComposeFolder = "/compose"
+const ComposeFolder = "/etc/sr/compose"
 
 func ListComposes() ([]string, error) {
-	files, err := ioutil.ReadDir("./")
+	files, err := ioutil.ReadDir(ComposeFolder)
 	if err != nil {
 		return nil, err
 	}

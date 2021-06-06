@@ -18,4 +18,7 @@ WORKDIR /
 
 ENV GIN_MODE=release
 
+VOLUME /etc/sr/
+EXPOSE 8082
+
 CMD $APP_NAME
