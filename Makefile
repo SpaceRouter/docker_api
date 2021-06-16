@@ -13,8 +13,8 @@ docker:
 
 .PHONY: release
 release:
-	@docker build . -t $(RELEASE_PACKAGE)
-	@docker push $(RELEASE_PACKAGE)
+	@docker buildx create --use
+	@docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 . -t $(RELEASE_PACKAGE) --push
 
 .PHONY: docker-dev-image
 docker-dev-image:
