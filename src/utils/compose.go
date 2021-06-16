@@ -47,7 +47,7 @@ func RemoveCompose(name string) error {
 }
 
 func WriteCompose(name string, compose models.Compose) error {
-	file, err := os.OpenFile(GetComposePath(name), os.O_WRONLY|os.O_CREATE, 0644)
+	file, err := os.Create(GetComposePath(name))
 	if err != nil {
 		return err
 	}
