@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/docker/docker/client"
 	"github.com/gin-gonic/gin"
+	cors "github.com/itsjamie/gin-cors"
 	"github.com/spacerouter/docker_api/controllers"
 	_ "github.com/spacerouter/docker_api/docs"
 	swaggerFiles "github.com/swaggo/files"
@@ -13,6 +14,15 @@ func NewRouter(cli *client.Client) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+
+	router.Use(cors.Middleware(cors.Config{
+		Origins:         "*",
+		Methods:         "GET, PUT, POST, DELETE, OPTIONS",
+		RequestHeaders:  "Origin, Authorization, Content-Type",
+		ExposedHeaders:  "",
+		Credentials:     true,
+		ValidateHeaders: false,
+	}))
 
 	health := new(controllers.HealthController)
 

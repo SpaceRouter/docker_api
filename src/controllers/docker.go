@@ -220,9 +220,9 @@ func (dc *DockerController) RemoveStack(c *gin.Context) {
 
 	err := utils.StopStack(name)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, forms.BasicResponse{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.BasicResponse{
 			Ok:      false,
-			Message: "Stack not found",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -239,5 +239,27 @@ func (dc *DockerController) RemoveStack(c *gin.Context) {
 	c.JSON(http.StatusOK, forms.BasicResponse{
 		Ok:      true,
 		Message: "",
+	})
+}
+
+func (dc *DockerController) GetActiveStacks(c *gin.Context) {
+	stacks, err := utils.GetActiveStacks()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.ActiveStacksResponse{
+			Ok:      false,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	var stackNames []string
+	for _, stack := range stacks {
+		stackNames = append(stackNames, stack.Name)
+	}
+
+	c.JSON(http.StatusOK, forms.ActiveStacksResponse{
+		Ok:      true,
+		Message: "",
+		Stacks:  stackNames,
 	})
 }

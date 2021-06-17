@@ -1,9 +1,11 @@
-FROM golang
+FROM golang:rc-alpine
 
 ENV APP_NAME docker_api
 
 COPY src /source
 WORKDIR /source
+
+RUN apk add gcc
 
 RUN go get && \
  go get -u github.com/swaggo/swag/cmd/swag && \

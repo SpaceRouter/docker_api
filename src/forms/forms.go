@@ -36,3 +36,9 @@ type StackInfo struct {
 	Description string
 	Developer   *models.Developer
 }
+
+type ActiveStacksResponse struct {
+	Message string
+	Ok      bool
+	Stacks  []string
+}

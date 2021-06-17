@@ -19,3 +19,9 @@ type ComposeService struct {
 	Volumes     []string
 	Environment map[string]string
 }
+
+type ComposeOutput struct {
+	Name     string
+	Services []interface{}
+	Owner    string
+}
