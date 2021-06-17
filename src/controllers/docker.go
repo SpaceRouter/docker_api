@@ -67,10 +67,11 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 	log.Println()
 	err = utils.WriteCompose(stack.Name, compose)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, forms.BasicResponse{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.BasicResponse{
 			Ok:      false,
 			Message: err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusInternalServerError, forms.BasicResponse{

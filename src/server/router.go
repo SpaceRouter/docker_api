@@ -17,7 +17,7 @@ func NewRouter(cli *client.Client) *gin.Engine {
 
 	router.Use(cors.Middleware(cors.Config{
 		Origins:         "*",
-		Methods:         "GET, PUT, POST, DELETE, OPTIONS",
+		Methods:         "GET, PUT, POST, DELETE",
 		RequestHeaders:  "Origin, Authorization, Content-Type",
 		ExposedHeaders:  "",
 		Credentials:     true,
