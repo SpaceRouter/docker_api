@@ -42,6 +42,7 @@ func NewRouter(cli *client.Client) *gin.Engine {
 		//v1.Use(auth.SrAuthMiddlewareGin())
 		v1.GET("containers", dockerCtrl.GetContainers)
 		v1.GET("stacks", dockerCtrl.GetStackList)
+		v1.GET("active_stacks", dockerCtrl.GetActiveStacks)
 
 		stack := v1.Group("stack")
 		{

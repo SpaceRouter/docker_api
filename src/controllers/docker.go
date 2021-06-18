@@ -74,7 +74,7 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusInternalServerError, forms.BasicResponse{
+	c.JSON(http.StatusOK, forms.BasicResponse{
 		Ok:      true,
 		Message: "",
 	})
@@ -243,8 +243,16 @@ func (dc *DockerController) RemoveStack(c *gin.Context) {
 	})
 }
 
+// GetActiveStacks godoc
+// @Summary Get running stacks
+// @Description Get running stacks
+// @ID StartStack
+// @Produce  json
+// @Success 200 {object} forms.ActiveStacksResponse
+// @Failure 500,404 {object} forms.ActiveStacksResponse
+// @Router /v1/active_stacks [get]
 func (dc *DockerController) GetActiveStacks(c *gin.Context) {
-	stacks, err := utils.GetActiveStacks()
+	ids, err := utils.GetComposeContainerIds()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.ActiveStacksResponse{
 			Ok:      false,
@@ -253,14 +261,24 @@ func (dc *DockerController) GetActiveStacks(c *gin.Context) {
 		return
 	}
 
-	var stackNames []string
-	for _, stack := range stacks {
-		stackNames = append(stackNames, stack.Name)
-	}
+	var composeList []string
 
+	for _, id := range ids {
+
+		info, err := dc.Client.ContainerInspect(c, id)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, forms.ActiveStacksResponse{
+				Ok:      false,
+				Message: err.Error(),
+			})
+			return
+		}
+
+		composeList = utils.AddOnce(composeList, info.Config.Labels["com.docker.compose.project"])
+	}
 	c.JSON(http.StatusOK, forms.ActiveStacksResponse{
 		Ok:      true,
 		Message: "",
-		Stacks:  stackNames,
+		Stacks:  composeList,
 	})
 }

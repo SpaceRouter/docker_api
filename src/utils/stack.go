@@ -2,10 +2,9 @@ package utils
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"github.com/spacerouter/docker_api/models"
 	"os/exec"
+	"strings"
 )
 
 func StartStack(stackName string) error {
@@ -30,7 +29,7 @@ func StartStack(stackName string) error {
 
 func StopStack(stackName string) error {
 
-	cmd := exec.Command("docker-compose", "-f", GetComposePath(stackName), "down")
+	cmd := exec.Command("docker-w", "-f", GetComposePath(stackName), "down")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -48,9 +47,10 @@ func StopStack(stackName string) error {
 	return nil
 }
 
-func GetActiveStacks() ([]models.ComposeOutput, error) {
+// GetComposeContainerIds get all child containers ids of all composes
+func GetComposeContainerIds() ([]string, error) {
 
-	cmd := exec.Command("docker", "compose", "ls", "--format", "json")
+	cmd := exec.Command("docker", "ps", "--filter", "label=com.docker.compose.project", "-q")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -68,11 +68,6 @@ func GetActiveStacks() ([]models.ComposeOutput, error) {
 		return nil, fmt.Errorf(errStr)
 	}
 
-	var stacks []models.ComposeOutput
-	err = json.Unmarshal(stdout.Bytes(), &stacks)
-	if err != nil {
-		return nil, err
-	}
-
-	return stacks, nil
+	ids := strings.Split(stdout.String(), "\n")
+	return ids, nil
 }
