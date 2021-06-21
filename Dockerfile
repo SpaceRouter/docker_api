@@ -5,7 +5,9 @@ ENV APP_NAME docker_api
 COPY src /source
 WORKDIR /source
 
-RUN apk add gcc
+RUN apk add --update openrc gcc docker py-pip python3-dev libffi-dev openssl-dev gcc libc-dev rust cargo make && \
+    rc-update add docker boot && \
+    chmod +x /usr/local/bin/docker-compose
 
 RUN go get && \
  go get -u github.com/swaggo/swag/cmd/swag && \
