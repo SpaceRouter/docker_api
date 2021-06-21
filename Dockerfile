@@ -3,8 +3,7 @@ FROM golang:rc-alpine
 ENV APP_NAME docker_api
 
 RUN apk add --update openrc gcc docker docker-compose && \
-    rc-update add docker boot && \
-    chmod +x /usr/local/bin/docker-compose
+    rc-update add docker boot
 
 COPY src /source
 WORKDIR /source
