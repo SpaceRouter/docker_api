@@ -264,6 +264,9 @@ func (dc *DockerController) GetActiveStacks(c *gin.Context) {
 	var composeList []string
 
 	for _, id := range ids {
+		if id == "" {
+			continue
+		}
 
 		info, err := dc.Client.ContainerInspect(c, id)
 		if err != nil {
