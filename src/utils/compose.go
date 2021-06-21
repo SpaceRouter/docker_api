@@ -21,7 +21,7 @@ func ListComposes() ([]string, error) {
 	composes := make([]string, 0)
 	for _, f := range files {
 		if strings.HasSuffix(f.Name(), ".yaml") && !f.IsDir() {
-			composes = append(composes, f.Name())
+			composes = append(composes, strings.TrimSuffix(f.Name(), ".yaml"))
 		}
 	}
 	return composes, nil

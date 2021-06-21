@@ -8,13 +8,17 @@ import (
 )
 
 func StartStack(stackName string) error {
+	dockerComposePath, err := exec.LookPath("docker-compose")
+	if err != nil {
+		return err
+	}
 
-	cmd := exec.Command("docker-compose", "-p", stackName, "-f", GetComposePath(stackName), "-p", stackName, "up", "-d")
+	cmd := exec.Command(dockerComposePath, "-p", stackName, "-f", GetComposePath(stackName), "-p", stackName, "up", "-d")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return err
 	}
@@ -28,13 +32,17 @@ func StartStack(stackName string) error {
 }
 
 func StopStack(stackName string) error {
+	dockerComposePath, err := exec.LookPath("docker-compose")
+	if err != nil {
+		return err
+	}
 
-	cmd := exec.Command("docker-compose", "-p", stackName, "-f", GetComposePath(stackName), "down")
+	cmd := exec.Command(dockerComposePath, "-p", stackName, "-f", GetComposePath(stackName), "down")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return err
 	}
@@ -49,8 +57,12 @@ func StopStack(stackName string) error {
 
 // GetComposeContainerIds get all child containers ids of all composes
 func GetComposeContainerIds() ([]string, error) {
+	dockerPath, err := exec.LookPath("docker")
+	if err != nil {
+		return nil, err
+	}
 
-	cmd := exec.Command("docker", "ps", "--filter", "label=com.docker.compose.project", "-q")
+	cmd := exec.Command(dockerPath, "ps", "--filter", "label=com.docker.compose.project", "-q")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -58,7 +70,7 @@ func GetComposeContainerIds() ([]string, error) {
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return nil, err
 	}
