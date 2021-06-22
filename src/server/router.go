@@ -26,31 +26,35 @@ func NewRouter(cli *client.Client) *gin.Engine {
 
 	health := new(controllers.HealthController)
 
-	router.GET("/health", health.Status)
-
-	router.POST("/tea", controllers.GetTea)
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	//auth := sr_auth.CreateAuth(config.GetSecretKey(), config.GetConfig().GetString("security.auth_server"), nil)
-
-	v1 := router.Group("v1")
+	main := router.Group("docker")
 	{
-		dockerCtrl := controllers.DockerController{
-			Client: cli,
-		}
-		//v1.Use(auth.SrAuthMiddlewareGin())
-		v1.GET("containers", dockerCtrl.GetContainers)
-		v1.GET("stacks", dockerCtrl.GetStackList)
-		v1.GET("active_stacks", dockerCtrl.GetActiveStacks)
 
-		stack := v1.Group("stack")
+		main.GET("/health", health.Status)
+
+		main.POST("/tea", controllers.GetTea)
+
+		main.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+		//auth := sr_auth.CreateAuth(config.GetSecretKey(), config.GetConfig().GetString("security.auth_server"), nil)
+
+		v1 := main.Group("v1")
 		{
-			stack.GET(":name", dockerCtrl.GetStack)
-			stack.POST("", dockerCtrl.CreateStack)
-			stack.DELETE(":name", dockerCtrl.RemoveStack)
-			stack.GET(":name/start", dockerCtrl.StartStack)
-			stack.GET(":name/stop", dockerCtrl.StopStack)
+			dockerCtrl := controllers.DockerController{
+				Client: cli,
+			}
+			//v1.Use(auth.SrAuthMiddlewareGin())
+			v1.GET("containers", dockerCtrl.GetContainers)
+			v1.GET("stacks", dockerCtrl.GetStackList)
+			v1.GET("active_stacks", dockerCtrl.GetActiveStacks)
+
+			stack := v1.Group("stack")
+			{
+				stack.GET(":name", dockerCtrl.GetStack)
+				stack.POST("", dockerCtrl.CreateStack)
+				stack.DELETE(":name", dockerCtrl.RemoveStack)
+				stack.GET(":name/start", dockerCtrl.StartStack)
+				stack.GET(":name/stop", dockerCtrl.StopStack)
+			}
 		}
 	}
 

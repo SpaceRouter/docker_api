@@ -3,7 +3,7 @@ server:
   port: 8082
 security:
   secret_key: JESUISHYPERFANDESEXE
-  auth_server: "http://localhost:8080"
+  auth_server: "http://localhost:8080/auth"
 
 db:
   type: "sqlite"
