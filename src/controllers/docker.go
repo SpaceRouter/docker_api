@@ -246,7 +246,7 @@ func (dc *DockerController) RemoveStack(c *gin.Context) {
 // GetActiveStacks godoc
 // @Summary Get running stacks
 // @Description Get running stacks
-// @ID StartStack
+// @ID GetActiveStacks
 // @Produce  json
 // @Success 200 {object} forms.ActiveStacksResponse
 // @Failure 500,404 {object} forms.ActiveStacksResponse
@@ -264,6 +264,9 @@ func (dc *DockerController) GetActiveStacks(c *gin.Context) {
 	var composeList []string
 
 	for _, id := range ids {
+		if id == "" {
+			continue
+		}
 
 		info, err := dc.Client.ContainerInspect(c, id)
 		if err != nil {
