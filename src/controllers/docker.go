@@ -89,7 +89,7 @@ func (dc *DockerController) CreateStack(c *gin.Context) {
 // @Failure 500 {object} forms.StackResponse
 // @Router /v1/stack/{name} [get]
 func (dc *DockerController) GetStack(c *gin.Context) {
-	stack, err := utils.ImportCompose(c.Param("name"))
+	stack, err := utils.ReadComposeToStack(c.Param("name"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, forms.StackResponse{
 			Ok:      false,

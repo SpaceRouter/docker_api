@@ -131,7 +131,7 @@ func ServiceToComposeService(service models.Service) models.ComposeService {
 	}
 }
 
-func ImportCompose(name string) (*models.Stack, error) {
+func ReadComposeToStack(name string) (*models.Stack, error) {
 
 	file, err := ioutil.ReadFile(GetComposePath(name))
 	if err != nil {
@@ -145,16 +145,15 @@ func ImportCompose(name string) (*models.Stack, error) {
 		return nil, err
 	}
 
-	stack, err := ComposeToStack(compose)
+	stack, err := ComposeToStack(compose, name)
 	if err != nil {
 		return nil, err
 	}
 
 	return stack, nil
-
 }
 
-func ComposeToStack(compose models.Compose) (*models.Stack, error) {
+func ComposeToStack(compose models.Compose, name string) (*models.Stack, error) {
 	networks, err := ComposeNetworksToNetworkDeclarations(compose.Networks)
 	if err != nil {
 		return nil, err
@@ -173,6 +172,7 @@ func ComposeToStack(compose models.Compose) (*models.Stack, error) {
 		Networks: networks,
 		Volumes:  volumes,
 		Services: services,
+		Name:     name,
 	}, nil
 }
 

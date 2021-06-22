@@ -1,12 +1,10 @@
 package models
 
 type Stack struct {
-	Name        string
-	Icon        string
-	Description string
-	Services    []Service
-	Networks    []NetworkDeclaration
-	Volumes     []VolumeDeclaration
+	Name     string
+	Services []Service
+	Networks []NetworkDeclaration
+	Volumes  []VolumeDeclaration
 }
 
 type Service struct {
