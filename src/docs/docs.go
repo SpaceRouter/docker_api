@@ -32,6 +32,36 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/active_stacks": {
+            "get": {
+                "description": "Get running stacks",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get running stacks",
+                "operationId": "GetActiveStacks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/forms.ActiveStacksResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.ActiveStacksResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/forms.ActiveStacksResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/containers": {
             "get": {
                 "description": "Get all containers",
@@ -243,6 +273,23 @@ var doc = `{
         }
     },
     "definitions": {
+        "forms.ActiveStacksResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "ok": {
+                    "type": "boolean"
+                },
+                "stacks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "forms.BasicResponse": {
             "type": "object",
             "properties": {
@@ -351,11 +398,17 @@ var doc = `{
         "models.Service": {
             "type": "object",
             "properties": {
+                "domain": {
+                    "type": "string"
+                },
                 "envs": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.EnvVar"
                     }
+                },
+                "httpPort": {
+                    "type": "integer"
                 },
                 "image": {
                     "type": "string"
@@ -389,12 +442,6 @@ var doc = `{
         "models.Stack": {
             "type": "object",
             "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },

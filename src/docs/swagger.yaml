@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  forms.ActiveStacksResponse:
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+      stacks:
+        items:
+          type: string
+        type: array
+    type: object
   forms.BasicResponse:
     properties:
       message:
@@ -69,10 +80,14 @@ definitions:
     type: object
   models.Service:
     properties:
+      domain:
+        type: string
       envs:
         items:
           $ref: '#/definitions/models.EnvVar'
         type: array
+      httpPort:
+        type: integer
       image:
         type: string
       imageVersion:
@@ -94,10 +109,6 @@ definitions:
     type: object
   models.Stack:
     properties:
-      description:
-        type: string
-      icon:
-        type: string
       name:
         type: string
       networks:
@@ -137,6 +148,26 @@ info:
   title: SpaceRouter docker_api
   version: "0.1"
 paths:
+  /v1/active_stacks:
+    get:
+      description: Get running stacks
+      operationId: GetActiveStacks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.ActiveStacksResponse'
+        "404":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.ActiveStacksResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/forms.ActiveStacksResponse'
+      summary: Get running stacks
   /v1/containers:
     get:
       description: Get all containers
