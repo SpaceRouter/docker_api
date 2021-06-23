@@ -20,12 +20,8 @@ func StartStack(stackName string) error {
 
 	err = cmd.Run()
 	if err != nil {
-		return err
-	}
-
-	errStr := stderr.String()
-	if errStr != "" {
-		return fmt.Errorf(errStr)
+		errStr := stderr.String()
+		return fmt.Errorf("%s %s", err, errStr)
 	}
 
 	return nil
@@ -44,12 +40,8 @@ func StopStack(stackName string) error {
 
 	err = cmd.Run()
 	if err != nil {
-		return err
-	}
-
-	errStr := stderr.String()
-	if errStr != "" {
-		return fmt.Errorf(errStr)
+		errStr := stderr.String()
+		return fmt.Errorf("%s %s", err, errStr)
 	}
 
 	return nil
