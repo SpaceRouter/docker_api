@@ -86,7 +86,9 @@ func StackToCompose(stack models.Stack) models.Compose {
 		volumes[volume.Name] = models.ComposeVolumeDeclaration{}
 	}
 
-	networks := map[string]models.ComposeNetworkDeclaration{}
+	networks := map[string]models.ComposeNetworkDeclaration{
+		"traefik-public": {},
+	}
 	for _, network := range stack.Networks {
 		networks[network.Name] = models.ComposeNetworkDeclaration{}
 	}
@@ -122,12 +124,29 @@ func ServiceToComposeService(service models.Service) models.ComposeService {
 		environment[env.Name] = env.Value
 	}
 
+	labels := map[string]string{}
+	if service.Domain != "" {
+
+		networks = append(networks, "traefik-public")
+
+		tPrefix := "traefik.http.routers." + service.Domain
+
+		labels = map[string]string{
+			"traefik.enable":         "true",
+			tPrefix + ".entrypoints": "websecure",
+			tPrefix + ".rule":        "Host(`" + service.Domain + "`)",
+			tPrefix + ".service":     service.Domain,
+			"traefik.http.services." + service.Domain + ".loadbalancer.server.port": strconv.Itoa(service.HttpPort),
+		}
+	}
+
 	return models.ComposeService{
 		Image:       service.Image + ":" + service.ImageVersion,
 		Ports:       ports,
 		Networks:    networks,
 		Volumes:     volumes,
 		Environment: environment,
+		Labels:      labels,
 	}
 }
 
@@ -228,6 +247,20 @@ func ComposeServicesToServices(services map[string]models.ComposeService) ([]mod
 			imageVersion = imageInfo[1]
 		}
 
+		httpPort := 0
+		domain := ""
+
+		for label, value := range service.Labels {
+			if strings.HasSuffix(label, "loadbalancer.server.port") {
+				httpPort, err = strconv.Atoi(value)
+				if err != nil {
+					return nil, err
+				}
+			} else if strings.HasSuffix(label, ".service") {
+				domain = value
+			}
+		}
+
 		returnService = append(returnService, models.Service{
 			Name:         name,
 			Image:        imageInfo[0],
@@ -236,6 +269,8 @@ func ComposeServicesToServices(services map[string]models.ComposeService) ([]mod
 			Envs:         envs,
 			Volumes:      vol,
 			Networks:     networks,
+			Domain:       domain,
+			HttpPort:     httpPort,
 		})
 	}
 

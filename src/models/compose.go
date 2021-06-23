@@ -17,6 +17,7 @@ type ComposeService struct {
 	Ports       []string
 	Networks    []string
 	Volumes     []string
+	Labels      map[string]string
 	Environment map[string]string
 }
 

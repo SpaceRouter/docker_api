@@ -11,6 +11,8 @@ type Service struct {
 	Name         string
 	Image        string
 	ImageVersion string
+	Domain       string
+	HttpPort     int
 	Ports        []Port
 	Envs         []EnvVar
 	Volumes      []Volume
