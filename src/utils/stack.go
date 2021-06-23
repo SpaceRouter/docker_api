@@ -13,7 +13,7 @@ func StartStack(stackName string) error {
 		return err
 	}
 
-	cmd := exec.Command(dockerComposePath, "-p", stackName, "-f", GetComposePath(stackName), "-p", stackName, "up", "-d")
+	cmd := exec.Command(dockerComposePath, "-f", GetComposePath(stackName), "-p", stackName, "up", "-d")
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
