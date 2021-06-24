@@ -7,6 +7,7 @@ type Compose struct {
 }
 
 type ComposeNetworkDeclaration struct {
+	External bool
 }
 
 type ComposeVolumeDeclaration struct {

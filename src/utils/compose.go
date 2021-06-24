@@ -87,7 +87,9 @@ func StackToCompose(stack models.Stack) models.Compose {
 	}
 
 	networks := map[string]models.ComposeNetworkDeclaration{
-		"traefik-public": {},
+		"traefik-public": {
+			External: true,
+		},
 	}
 	for _, network := range stack.Networks {
 		networks[network.Name] = models.ComposeNetworkDeclaration{}
@@ -127,7 +129,7 @@ func ServiceToComposeService(service models.Service) models.ComposeService {
 	labels := map[string]string{}
 	if service.Domain != "" {
 
-		networks = append(networks, "traefik-public")
+		networks = AddOnce(networks, "traefik-public")
 
 		tPrefix := "traefik.http.routers." + service.Domain
 
