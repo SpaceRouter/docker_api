@@ -316,7 +316,7 @@ func StringsToVolumes(ports []string) ([]models.Volume, error) {
 
 		returnVolumes = append(returnVolumes, models.Volume{
 			Name:       parts[0],
-			MountPoint: parts[0],
+			MountPoint: parts[1],
 		})
 	}
 
