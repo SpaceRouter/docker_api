@@ -12,7 +12,7 @@ type Service struct {
 	Image        string
 	ImageVersion string
 	Domain       string
-	HttpPort     int
+	HttpPort     int `json:",string"`
 	Ports        []Port
 	Envs         []EnvVar
 	Volumes      []Volume
