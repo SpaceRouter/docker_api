@@ -15,7 +15,6 @@ type ComposeVolumeDeclaration struct {
 
 type ComposeService struct {
 	Image       string
-	Ports       []string
 	Networks    []string
 	Volumes     []string
 	Labels      map[string]string

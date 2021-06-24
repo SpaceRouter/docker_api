@@ -143,8 +143,8 @@ func ServiceToComposeService(service models.Service) models.ComposeService {
 	}
 
 	return models.ComposeService{
-		Image:       service.Image + ":" + service.ImageVersion,
-		Ports:       ports,
+		Image: service.Image + ":" + service.ImageVersion,
+		//Ports:       ports,
 		Networks:    networks,
 		Volumes:     volumes,
 		Environment: environment,
@@ -222,11 +222,11 @@ func ComposeVolumesToVolumeDeclarations(networks map[string]models.ComposeVolume
 func ComposeServicesToServices(services map[string]models.ComposeService) ([]models.Service, error) {
 	var returnService []models.Service
 	for name, service := range services {
-		ports, err := StringsToPorts(service.Ports)
+		/* ports, err := StringsToPorts(service.Ports)
 
 		if err != nil {
 			return nil, err
-		}
+		}*/
 
 		envs, err := StringsToEnvs(service.Environment)
 		if err != nil {
@@ -267,12 +267,12 @@ func ComposeServicesToServices(services map[string]models.ComposeService) ([]mod
 			Name:         name,
 			Image:        imageInfo[0],
 			ImageVersion: imageVersion,
-			Ports:        ports,
-			Envs:         envs,
-			Volumes:      vol,
-			Networks:     networks,
-			Domain:       domain,
-			HttpPort:     httpPort,
+			//Ports:        ports,
+			Envs:     envs,
+			Volumes:  vol,
+			Networks: networks,
+			Domain:   domain,
+			HttpPort: httpPort,
 		})
 	}
 
