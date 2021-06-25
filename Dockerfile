@@ -2,7 +2,7 @@ FROM golang:rc-alpine
 
 ENV APP_NAME docker_api
 
-RUN apk add --update openrc gcc docker docker-compose && \
+RUN apk add --no-cache --purge -uU --update openrc gcc docker docker-compose && \
     rc-update add docker boot
 
 COPY src /source
