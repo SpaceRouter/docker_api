@@ -86,13 +86,14 @@ func StackToCompose(stack models.Stack) models.Compose {
 		volumes[volume.Name] = models.ComposeVolumeDeclaration{}
 	}
 
-	networks := map[string]models.ComposeNetworkDeclaration{
-		"traefik-public": {
-			External: true,
-		},
-	}
+	networks := map[string]models.ComposeNetworkDeclaration{}
+
 	for _, network := range stack.Networks {
 		networks[network.Name] = models.ComposeNetworkDeclaration{}
+	}
+
+	networks["traefik-public"] = models.ComposeNetworkDeclaration{
+		External: true,
 	}
 
 	return models.Compose{
