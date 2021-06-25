@@ -135,8 +135,8 @@ func ServiceToComposeService(service models.Service) models.ComposeService {
 
 		labels = map[string]string{
 			"traefik.enable":         "true",
-			tPrefix + ".entrypoints": "websecure",
-			tPrefix + ".rule":        "Host(`" + service.Domain + "`)",
+			tPrefix + ".entrypoints": "web",
+			tPrefix + ".rule":        "Host(`" + service.Domain + ".opengate.lan`)",
 			tPrefix + ".service":     service.Domain,
 			"traefik.http.services." + service.Domain + ".loadbalancer.server.port": strconv.Itoa(service.HttpPort),
 		}
