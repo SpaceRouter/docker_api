@@ -64,12 +64,8 @@ func GetComposeContainerIds() ([]string, error) {
 
 	err = cmd.Run()
 	if err != nil {
-		return nil, err
-	}
-
-	errStr := stderr.String()
-	if errStr != "" {
-		return nil, fmt.Errorf(errStr)
+		errStr := stderr.String()
+		return nil, fmt.Errorf("%s %s", err, errStr)
 	}
 
 	ids := strings.Split(stdout.String(), "\n")
