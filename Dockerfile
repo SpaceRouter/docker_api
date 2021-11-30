@@ -1,5 +1,9 @@
 FROM golang:rc-alpine
 
+LABEL "space.opengate.vendor"="SpaceRouter"
+LABEL org.opencontainers.image.source https://github.com/SpaceRouter/docker_api
+LABEL space.opengate.image.authors="theo.lefevre@edu.esiee.fr"
+
 ENV APP_NAME docker_api
 
 RUN apk add --no-cache --purge -uU --update openrc gcc docker docker-compose && \
