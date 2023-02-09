@@ -7,7 +7,7 @@ require (
 	github.com/containerd/containerd v1.5.2 // indirect
 	github.com/docker/docker v20.10.6+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
-	github.com/gin-gonic/gin v1.7.2
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-openapi/spec v0.20.3 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/itsjamie/gin-cors v0.0.0-20160420130702-97b4a9da7933
