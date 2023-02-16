@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/containerd/containerd v1.5.2 // indirect
+	github.com/containerd/containerd v1.5.18 // indirect
 	github.com/docker/docker v20.10.6+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/gin-gonic/gin v1.7.2
@@ -18,7 +18,5 @@ require (
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
 	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
-	golang.org/x/sys v0.0.0-20210601080250-7ecdf8ef093b // indirect
-	golang.org/x/tools v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )
